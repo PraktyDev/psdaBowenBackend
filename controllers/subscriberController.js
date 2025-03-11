@@ -1,4 +1,5 @@
-import prisma from "../utils/dbConfig.js"
+import { prisma } from "../utils/dbConfig.js"
+
 
 //ADD SUBSCRIBER
 export const emailSubscribers = async (req, res) =>{

@@ -1,4 +1,5 @@
-import prisma from "../utils/dbConfig.js"
+import { prisma } from "../utils/dbConfig.js"
+
 
 //POST NEW EVENT
 export const postEvent = async (req, res) =>{
