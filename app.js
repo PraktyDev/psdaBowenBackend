@@ -1,6 +1,7 @@
 import express from "express"
 import dotenv from "dotenv"
 import router from "./routes/index.js"
+import prisma from "./utils/dbConfig.js"
 
 const app = express()
 dotenv.config()
