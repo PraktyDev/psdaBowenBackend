@@ -8,7 +8,7 @@ const router = Router()
 router.post('/event', upload.single("image"), postEvent)
 router.get('/events', getAllEvents)
 router.get('/events/:id', getSingleEvent)
-router.put('/events/:id', editEvent)
+router.put('/events/:id', upload.single("image"), editEvent)
 router.delete('/events/:id', deleteEvent)
 
 

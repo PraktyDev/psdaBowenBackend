@@ -22,3 +22,4 @@ export async function uploadImage(dataUri) {
 }
 
 export const upload = multer({ storage: multer.memoryStorage() });
+
