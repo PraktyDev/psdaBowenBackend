@@ -1,17 +1,25 @@
 import { prisma } from "../utils/dbConfig.js"
+import { uploadImage } from "../utils/uploadImg.js"
 
 
 //POST NEW EVENT
 export const postEvent = async (req, res) =>{
     try {
-        const { body } = req
-        const { name, time, location, image } = body
+        const { body, file } = req
+        const { name, time, location } = body
+    
+        // Upload image to Cloudinary
+        const dataUri = `data:${file.mimetype};base64,${file.buffer.toString(
+          "base64"
+        )}`;
+
+        const { secure_url } = await uploadImage(dataUri)
         const event = await prisma.events.create({
             data: {
                 name,
                 time,
                 location,
-                image,
+                image: secure_url
             }
         })
         return res.status(201).json({ message: "Event created successfully", event })
@@ -62,7 +70,18 @@ export const editEvent = async (req, res) =>{
     try {
         const { id } = req.params
         const newId = parseInt(id)
-        const { name, time, location, image } = req.body
+        
+        const { body, file } = req
+    
+        const { name, time, location } = body
+    
+        // Upload image to Cloudinary
+        const dataUri = `data:${file.mimetype};base64,${file.buffer.toString(
+          "base64"
+        )}`;
+
+        const { secure_url } = await uploadImage(dataUri)
+
         const event = await prisma.events.update({
             where: {
                 id: newId
@@ -71,7 +90,7 @@ export const editEvent = async (req, res) =>{
                 name,
                 time,
                 location,
-                image,
+                image: secure_url
             },
         })
         if(!event){

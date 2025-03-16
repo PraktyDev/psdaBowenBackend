@@ -1,5 +1,6 @@
 import express from "express"
 import dotenv from "dotenv"
+import cors from "cors";
 import router from "./routes/index.js"
 import { prisma } from "./utils/dbConfig.js"
 
@@ -8,6 +9,12 @@ dotenv.config()
 
 
 app.use(express.json())
+app.use(cors({
+    origin: process.env.CLIENT_DOMAIN,
+    methods: 'GET, PUT, PATCH, POST, DELETE, HEAD',
+    credentials: true, //Allow credentials (cookies, authorization headers)
+    headers: ['Content-Type, Authorization']
+}))
 app.use('/api/v1', router)
 
 

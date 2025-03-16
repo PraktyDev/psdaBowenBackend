@@ -1,16 +1,24 @@
 import { prisma } from "../utils/dbConfig.js"
+import { uploadImage } from "../utils/uploadImg.js"
 
 
 //POST NEW NEWS
 export const postNews = async (req, res) =>{
     try {
-        const { body } = req
-        const { title, description, image } = body
+        const { body, file } = req
+        const { title, description } = body
+    
+        // Upload image to Cloudinary
+        const dataUri = `data:${file.mimetype};base64,${file.buffer.toString(
+          "base64"
+        )}`;
+
+        const { secure_url } = await uploadImage(dataUri)
         const news = await prisma.news.create({
             data: {
                 title,
                 description,
-                image,
+                image: secure_url
             }
         })
         return res.status(201).json({ message: "News created successfully", news })
@@ -52,7 +60,15 @@ export const editNews = async (req, res) =>{
     try {
         const { id } = req.params
         const newId = parseInt(id)
-        const { title, description, image } = req.body
+        const { body, file } = req
+        const { title, description } = body
+    
+        // Upload image to Cloudinary
+        const dataUri = `data:${file.mimetype};base64,${file.buffer.toString(
+          "base64"
+        )}`;
+
+        const { secure_url } = await uploadImage(dataUri)
         const news = await prisma.news.update({
             where: {
                 id: newId
@@ -60,7 +76,7 @@ export const editNews = async (req, res) =>{
             data: {
                 title,
                 description,
-                image,
+                image: secure_url
             },
         })
         if(!news){
