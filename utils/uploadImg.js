@@ -23,3 +23,11 @@ export async function uploadImage(dataUri) {
 
 export const upload = multer({ storage: multer.memoryStorage() });
 
+
+// const removeImage = async(publicId) =>{
+//     try{
+//         const res = await cloudinary.v2.uploader.destroy(publicId)
+//     } catch(error){
+//         console.log(error)
+//     }
+// }
